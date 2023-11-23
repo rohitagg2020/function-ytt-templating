@@ -1,0 +1,28 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: demo-inline
+spec:
+  compositeTypeRef:
+    apiVersion: demo.crossplane.io/v1beta1
+    kind: XR
+  mode: Pipeline
+  pipeline:
+    - step: render-templates
+      functionRef:
+        name: function-ytt-templating
+      input:
+        apiVersion: ytt.fn.crossplane.io/v1beta1
+        kind: YTT
+        source: Inline
+        inline: |
+            #@ load("@ytt:data", "data")
+            ---
+            apiVersion: s3.aws.upbound.io/v1beta1
+            kind: Bucket
+            metadata:
+              annotations:
+                ytt.fn.crossplane.io/composition-resource-name: bucket
+            spec:
+              forProvider:
+                region: #@ data.values.region

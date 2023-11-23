@@ -1,4 +1,4 @@
-module github.com/crossplane/function-template-go
+module github.com/crossplane-contrib/function-ytt-templating
 
 go 1.21
 
@@ -9,6 +9,7 @@ require (
 	github.com/crossplane/crossplane-runtime v1.14.2
 	github.com/crossplane/function-sdk-go v0.1.0
 	github.com/google/go-cmp v0.6.0
+	github.com/vmware-tanzu/carvel-ytt v0.46.2
 	google.golang.org/protobuf v1.31.0
 	k8s.io/apimachinery v0.28.4
 	sigs.k8s.io/controller-tools v0.13.0
@@ -32,9 +33,11 @@ require (
 	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.3.1 // indirect
+	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/k14s/starlark-go v0.0.0-20200720175618-3a5c849cc368 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
