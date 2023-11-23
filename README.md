@@ -1,24 +1,69 @@
-# function-template-go
-[![CI](https://github.com/crossplane/function-template-go/actions/workflows/ci.yml/badge.svg)](https://github.com/crossplane/function-template-go/actions/workflows/ci.yml)
+# function-ytt-templating
 
-A template for writing a [composition function][functions] in [Go][go].
+This composition function allows you to compose Crossplane resources using Ytt templates. 
 
-To learn how to use this template:
+Here's an example:
 
-* [Follow the guide to writing a composition function in Go][function guide]
-* [Learn about how composition functions work][functions]
-* [Read the function-sdk-go package documentation][package docs]
+```yaml
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: demo-inline
+spec:
+  compositeTypeRef:
+    apiVersion: demo.crossplane.io/v1beta1
+    kind: XR
+  mode: Pipeline
+  pipeline:
+    - step: render-templates
+      functionRef:
+        name: function-ytt-templating
+      input:
+        apiVersion: ytt.fn.crossplane.io/v1beta1
+        kind: YTT
+        source: Inline
+        inline: |
+            #@ load("@ytt:data", "data")
+            ---
+            apiVersion: s3.aws.upbound.io/v1beta1
+            kind: Bucket
+            metadata:
+              annotations:
+                ytt.fn.crossplane.io/composition-resource-name: bucket
+            spec:
+              forProvider:
+                region: #@ data.values.region
+```
+## Using this function
 
-If you just want to jump in and get started:
+This function can load templates from one source: `Inline`.
 
-1. Replace `function-template-go` with your function's name in `go.mod`,
-   `package/crossplane.yaml`, and any Go imports
-1. Update `input/v1beta1/` to reflect your desired input (and run `go generate`)
-1. Add your logic to `RunFunction` in `fn.go`
-1. Add tests for your logic in `fn_test.go`
-1. Update this file, `README.md`, to be about your function!
+Use the `Inline` source to specify a simple template inline in your Composition.
+Multiple YAML manifests can be specified using the `---` document separator.
 
-This template uses [Go][go], [Docker][docker], and the [Crossplane CLI][cli] to
+To mark a desired composed resource as ready, use the
+`ytt.fn.crossplane.io/ready` annotation:
+
+```yaml
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: Bucket
+metadata:
+  annotations:
+    ytt.fn.crossplane.io/composition-resource-name: bucket
+    ytt.fn.crossplane.io/ready: True
+spec: {}
+```
+
+See the [example](example) directory for examples that you can run locally using
+the Crossplane CLI:
+
+```shell
+$ crossplane beta render xr.yaml composition.yaml functions.yaml
+```
+
+## Developing this function
+
+This function uses [Go][go], [Docker][docker], and the [Crossplane CLI][cli] to
 build functions.
 
 ```shell
@@ -35,9 +80,6 @@ $ docker build . --tag=runtime
 $ crossplane xpkg build -f package --embed-runtime-image=runtime
 ```
 
-[functions]: https://docs.crossplane.io/latest/concepts/composition-functions
 [go]: https://go.dev
-[function guide]: https://docs.crossplane.io/knowledge-base/guides/write-a-composition-function-in-go
-[package docs]: https://pkg.go.dev/github.com/crossplane/function-sdk-go
 [docker]: https://www.docker.com
 [cli]: https://docs.crossplane.io/latest/cli
