@@ -6,6 +6,6 @@ spec:
   s3_buckets:
     create: true
     regions: 
-    - "us-east1"
-    - "us-east2"
-    - "us-east3"
+    - us-east1
+    - us-east2
+    - us-east3

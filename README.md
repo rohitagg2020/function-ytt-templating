@@ -41,25 +41,8 @@ This function can load templates from one source: `Inline`.
 Use the `Inline` source to specify a simple template inline in your Composition.
 Multiple YAML manifests can be specified using the `---` document separator.
 
-To mark a desired composed resource as ready, use the
-`ytt.fn.crossplane.io/ready` annotation:
-
-```yaml
-apiVersion: s3.aws.upbound.io/v1beta1
-kind: Bucket
-metadata:
-  annotations:
-    ytt.fn.crossplane.io/composition-resource-name: bucket
-    ytt.fn.crossplane.io/ready: True
-spec: {}
-```
-
 See the [example](example) directory for examples that you can run locally using
 the Crossplane CLI:
-
-```shell
-$ crossplane beta render xr.yaml composition.yaml functions.yaml
-```
 
 ## Developing this function
 
