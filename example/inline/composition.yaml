@@ -1,0 +1,35 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xbuckets.aws.platformref.upbound.io
+spec:
+  compositeTypeRef:
+    apiVersion: aws.platformref.upbound.io/v1alpha1
+    kind: XBucket
+  mode: Pipeline
+  pipeline:
+    - step: render-templates
+      functionRef:
+        name: function-ytt-templating
+      input:
+        apiVersion: ytt.fn.crossplane.io/v1beta1
+        kind: YTT
+        source: Inline
+        inline: |
+          #@ load("@ytt:data", "data")
+          ---
+          #@ if data.values.create:
+          #@ for region in data.values.regions:
+          ---
+          apiVersion: s3.aws.upbound.io/v1beta1
+          kind: Bucket
+          metadata:
+            name: #@ "app-bucket-"+region
+            annotations:
+              ytt.fn.crossplane.io/composition-resource-name: #@ "app-bucket-"+region
+          spec:
+            forProvider:
+              name: #@ "app-bucket-"+region
+              region: #@ region
+          #@ end
+          #@ end

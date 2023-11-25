@@ -7,7 +7,7 @@ import (
 	yttfiles "github.com/vmware-tanzu/carvel-ytt/pkg/files"
 )
 
-func ytt(tpl, dvs []string) (string, error) {
+func ytt(tpl []string) (string, error) {
 	// create and invoke ytt "template" command
 	templatingOptions := yttcmd.NewOptions()
 
@@ -15,10 +15,7 @@ func ytt(tpl, dvs []string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
-	// equivalent to `--data-value-yaml`
-	templatingOptions.DataValuesFlags.KVsFromYAML = dvs
-
+	
 	// for in-memory use, pipe output to "/dev/null"
 	noopUI := yttui.NewCustomWriterTTY(false, noopWriter{}, noopWriter{})
 

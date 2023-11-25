@@ -1,0 +1,11 @@
+apiVersion: aws.platformref.upbound.io/v1alpha1
+kind: MyBucket
+metadata:
+  name: test-user
+  namespace: crossplane-system
+spec:
+  create: true
+  regions:
+  - us-east1
+  - us-east2
+  - us-west1

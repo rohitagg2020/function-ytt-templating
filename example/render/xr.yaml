@@ -1,0 +1,11 @@
+apiVersion: demo.crossplane.io/v1beta1
+kind: XR
+metadata:
+  name: demo
+spec:
+  s3_buckets:
+    create: true
+    regions: 
+    - "us-east1"
+    - "us-east2"
+    - "us-east3"

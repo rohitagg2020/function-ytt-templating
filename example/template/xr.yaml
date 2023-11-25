@@ -1,7 +1,0 @@
-apiVersion: demo.crossplane.io/v1beta1
-kind: XR
-metadata:
-  name: demo
-spec:
-  region: us-east1
-  

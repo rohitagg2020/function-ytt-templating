@@ -1,0 +1,38 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xbuckets.aws.platformref.upbound.io
+spec:
+  group: aws.platformref.upbound.io
+  names:
+    kind: XBucket
+    plural: xbuckets
+  claimNames:
+    kind: MyBucket
+    plural: mybuckets
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                create:
+                  type: boolean
+                  description: Create the S3 Bucket
+                regions:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - create
+            status:
+              type: object
+              properties:
+                dummy:
+                  type: string
+                  description: Dummy status field.

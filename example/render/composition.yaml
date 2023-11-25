@@ -18,11 +18,18 @@ spec:
         inline: |
             #@ load("@ytt:data", "data")
             ---
+            #@ if data.values.s3_buckets.create:
+            #@ for region in data.values.s3_buckets.regions:
+            ---
             apiVersion: s3.aws.upbound.io/v1beta1
             kind: Bucket
             metadata:
+              name: #@ "app-bucket-"+region
               annotations:
-                ytt.fn.crossplane.io/composition-resource-name: bucket
+                ytt.fn.crossplane.io/composition-resource-name: #@ "app-bucket-"+region
             spec:
               forProvider:
-                region: #@ data.values.region
+                name: #@ "app-bucket-"+region
+                region: #@ region
+            #@ end
+            #@ end
