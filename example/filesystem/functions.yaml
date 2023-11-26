@@ -1,0 +1,29 @@
+apiVersion: pkg.crossplane.io/v1beta1
+kind: Function
+metadata:
+  name: function-ytt-templating
+spec:
+  package: index.docker.io/rohitagg2020/function-ytt-templating:0.0.4
+  runtimeConfigRef:
+    name: mount-templates
+---
+apiVersion: pkg.crossplane.io/v1beta1
+kind: DeploymentRuntimeConfig
+metadata:
+  name: mount-templates
+spec:
+  deploymentTemplate:
+    spec:
+      selector: {}
+      template:
+        spec:
+          containers:
+            - name: package-runtime
+              volumeMounts:
+                - mountPath: /templates
+                  name: templates
+                  readOnly: true
+          volumes:
+            - name: templates
+              configMap:
+                name: templates

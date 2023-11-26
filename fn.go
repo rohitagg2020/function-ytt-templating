@@ -6,9 +6,6 @@ import (
 	"dario.cat/mergo"
 	"encoding/base64"
 	"fmt"
-	"io"
-	yaml2 "k8s.io/apimachinery/pkg/util/yaml"
-
 	"github.com/crossplane-contrib/function-ytt-templating/input/v1beta1"
 	"github.com/crossplane/crossplane-runtime/pkg/errors"
 	"github.com/crossplane/crossplane-runtime/pkg/fieldpath"
@@ -19,8 +16,10 @@ import (
 	"github.com/crossplane/function-sdk-go/resource"
 	"github.com/crossplane/function-sdk-go/response"
 	"google.golang.org/protobuf/encoding/protojson"
+	"io"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/json"
+	yaml2 "k8s.io/apimachinery/pkg/util/yaml"
 	"sigs.k8s.io/yaml"
 )
 

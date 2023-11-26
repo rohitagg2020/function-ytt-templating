@@ -1,0 +1,19 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xbuckets.aws.platformref.upbound.io
+spec:
+  compositeTypeRef:
+    apiVersion: aws.platformref.upbound.io/v1alpha1
+    kind: XBucket
+  mode: Pipeline
+  pipeline:
+    - step: render-templates
+      functionRef:
+        name: function-ytt-templating
+      input:
+        apiVersion: ytt.fn.crossplane.io/v1beta1
+        kind: YTT
+        source: FileSystem
+        fileSystem:
+          dirPath: /templates

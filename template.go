@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -92,7 +93,7 @@ func readTemplates(dir string) (string, error) {
 		if info.IsDir() || info.Name()[0] == dotCharacter {
 			return nil
 		}
-
+		fmt.Println(path)
 		data, err := os.ReadFile(path)
 		if err != nil {
 			return err
